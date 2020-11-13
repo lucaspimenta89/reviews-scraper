@@ -1,18 +1,8 @@
-defmodule ReviewsScraper do
-  @moduledoc """
-  Documentation for `ReviewsScraper`.
-  """
+defmodule ReviewsScraper.CLI do
+  def main(_args) do
+    reviews = ReviewsScraper.Scraper.fetch_first_five_pages()
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> ReviewsScraper.hello()
-      :world
-
-  """
-  def hello do
-    :world
+    IO.inspect(reviews)
+    IO.puts length(reviews)
   end
 end
