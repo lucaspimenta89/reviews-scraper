@@ -1,0 +1,6 @@
+version: '3'
+
+services:
+  reviews_scraper:
+    build: .
+    container_name: reviews-scraper
