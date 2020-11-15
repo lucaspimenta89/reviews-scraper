@@ -1,7 +1,7 @@
 defmodule ReviewsScraper.ReviewsScoreTest do
   use ReviewsScraper.TestCase
 
-  alias ReviewsScraper.Models.{Review, IndividualReview, EmployeeReview}
+  alias ReviewsScraper.Models.{IndividualReview, EmployeeReview}
 
   alias ReviewsScraper.ReviewsScore
 

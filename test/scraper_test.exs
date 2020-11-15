@@ -21,7 +21,7 @@ defmodule ReviewsScraper.ScraperTest do
       end
     end
 
-    test "get_reviews/0 error handling", %{ reviews_html: reviews_html, review: review } do
+    test "get_reviews/0 error handling" do
       with_mock(HTTPoison, [ get: fn _url -> {:error, %HTTPoison.Error{}} end]) do
 
         assert_raise RuntimeError, "Unable to download reviews", fn ->

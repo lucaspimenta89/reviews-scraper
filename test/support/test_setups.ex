@@ -151,17 +151,6 @@ defmodule ReviewsScraper.TestsSetups do
     {:ok, Map.put(setup, :reviews_html, reviews_html)}
   end
 
-  def setup_reviews_html_tree(setup) do
-    {:ok, parsed_fragment} = """
-      <div>
-        #{@review_html}
-      </div>
-    """
-    |> Floki.parse_fragment()
-
-    {:ok, Map.put(setup, :reviews_html_tree, parsed_fragment)}
-  end
-
   def setup_review_html_tree(setup) do
     {:ok, parsed_fragment} = Floki.parse_fragment(@review_html)
 
