@@ -22,7 +22,7 @@ defmodule ReviewsScraper.TestsSetups do
         <div>
           <div>
             <p class="review-content">
-              [REVIEW CONTENTE]
+              [REVIEW CONTENT]
             </p>
             <a id="7565083">Read More</a>
           </div>
@@ -162,7 +162,7 @@ defmodule ReviewsScraper.TestsSetups do
       rating: 50,
       date: ~D[2020-11-14],
       author: "lisapantlin",
-      content: "[REVIEW CONTENTE]",
+      content: "[REVIEW CONTENT]",
       individual_rates: [
         %IndividualReview{ name: "Customer Service", rating: 50 },
         %IndividualReview{ name: "Quality of Work", rating: 0 },

@@ -34,6 +34,8 @@ defmodule ReviewsScraper.MixProject do
       {:poison, "~> 4.0"},
       {:floki, "~> 0.29.0"},
       {:mock, "~> 0.3.5", only: :test},
+      {:earmark, "~> 1.2", only: :dev},
+      {:ex_doc, "~> 0.19", only: :dev}
     ]
   end
 end

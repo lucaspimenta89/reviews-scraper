@@ -1,4 +1,7 @@
 defmodule ReviewsScraper.DateParser do
+  @moduledoc """
+  Provides functions for review date parsing
+  """
 
   @months %{
     "January" => 1,
@@ -15,6 +18,20 @@ defmodule ReviewsScraper.DateParser do
     "December" => 12
   }
 
+  @doc """
+    Parse a review date string to elixir Date
+
+    ## Parameters
+    - date_string: Review date in format "[Month] [DAY], [YEAR]"
+
+    ## Examples
+
+    iex> ReviewsScraper.DateParser.parse_date("November 14, 2020")
+    ~D[2020-11-14]
+
+    iex> ReviewsScraper.DateParser.parse_date("invalid date")
+    {:error,  :invalid_date}
+  """
   def parse_date(date_string) when is_binary(date_string) do
     date_string
     |> String.trim()

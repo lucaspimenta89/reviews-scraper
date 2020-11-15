@@ -217,6 +217,7 @@ Requires [Elixir installation](https://elixir-lang.org/install.html)
 To  execute tests run the following command
 
 ```
+$ mix deps.get
 $ mix test
 ```
 
@@ -255,6 +256,7 @@ $ cd reviews-scraper
 Requires [Elixir installation](https://elixir-lang.org/install.html)
 
 ```
+$ mix deps.get
 $ mix escript.build
 $ ./reviews_scraper
 ```
@@ -281,3 +283,14 @@ Requires [Docker Compose installation](https://docs.docker.com/compose/install/)
 ```bash
 $ docker-compose up reviews_scraper
 ```
+
+# Documentation
+
+Execute the following command:
+
+```
+$ mix deps.get
+$ mix docs
+```
+
+The documentation will be available at the `doc` folder where you can open the `index.html` page in your browser
