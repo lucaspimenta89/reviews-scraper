@@ -2,7 +2,7 @@ defmodule ReviewsScraper.Scraper do
 
   @pages_range 1..5
 
-  def fetch_first_five_pages() do
+  def get_reviews() do
     @pages_range
     |> Task.async_stream(&process_page/1)
     |> Enum.reduce([], &concatenate_reviews/2)
