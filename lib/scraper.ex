@@ -9,7 +9,6 @@ defmodule ReviewsScraper.Scraper do
   end
 
   def concatenate_reviews({:ok, reviews}, acc), do: Enum.concat(acc, reviews)
-  def concatenate_reviews({:error, reason}, _acc), do: raise(reason)
 
   def process_page(page_number) do
     with {:ok, url} <- get_url("/page#{page_number}/?filter=&__optvLead=0#link"),
@@ -17,7 +16,7 @@ defmodule ReviewsScraper.Scraper do
       ReviewsScraper.ReviewsParser.get_document_reviews(body)
     else
       {:response, {:error, _ }} ->
-        {:error, :request_failed}
+        raise("Unable to download reviews")
     end
   end
 

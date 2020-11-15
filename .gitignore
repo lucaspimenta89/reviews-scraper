@@ -25,3 +25,5 @@ reviews_scraper-*.tar
 
 # Temporary files for e.g. tests
 /tmp
+
+reviews_scraper

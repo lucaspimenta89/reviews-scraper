@@ -8,11 +8,11 @@ defmodule ReviewsScraper.ReviewsParser do
 
   def get_document_reviews(html) when is_binary(html) do
     with {:ok, document} <- parse_html_string(html) do
-      get_html_document_reviews(document)
+      get_reviews(document)
     end
   end
 
-  defp get_html_document_reviews(html_doc) do
+  defp get_reviews(html_doc) do
     html_doc
     |> find_nodes(".review-entry")
     |> Enum.map(&get_review/1)
@@ -29,7 +29,7 @@ defmodule ReviewsScraper.ReviewsParser do
     |> ReviewsScore.get_review_score()
   end
 
-  defp get_review_rating(%Review{} = review, review_fragment) do
+  def get_review_rating(%Review{} = review, review_fragment) do
     rating = review_fragment
     |> get_node_class_attribute("div.dealership-rating > div:first-child")
     |> get_rating_from_classes()
@@ -51,9 +51,9 @@ defmodule ReviewsScraper.ReviewsParser do
   def get_rating_value(_), do: 0
 
   def get_review_date(%Review{} = review, review_fragment) do
-    date = review_fragment
+    {:ok, date} = review_fragment
     |> get_node_text("div.review-date > div:first-child")
-    |> DateParser.parse_date!()
+    |> DateParser.parse_date()
 
     Map.put(review, :date, date)
   end
@@ -72,6 +72,7 @@ defmodule ReviewsScraper.ReviewsParser do
   def get_review_content(%Review{} = review, review_fragment) do
     content = review_fragment
     |> get_node_text("p.review-content")
+    |> String.trim()
 
     Map.put(review, :content, content)
   end
