@@ -256,8 +256,8 @@ $ cd reviews-scraper
 Requires [Elixir installation](https://elixir-lang.org/install.html)
 
 ```
-$ mix deps.get
-$ mix escript.build
+$ mix local.hex && mix local.rebar
+$ mix do deps.get, escript.build
 $ ./reviews_scraper
 ```
 
