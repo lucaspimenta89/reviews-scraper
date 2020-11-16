@@ -4,19 +4,19 @@
 
 The challenge consists of fetching the first five pages of reviews about the McKaig Chevrolet Buick - A Dealer For The People at https://www.dealerrater.com.
 
-With the reviews in hand, the application must decide the top three overly rated reviews and print on the console.
+With the reviews in hand, the application must decide the top three overly rated reviews and print it on the console.
 
-The application is implemented using Elixir as the programming language, ExUnit for testing, HTTPoison for HTTP requests, Poison for JSON encoding, and Floki for HTML parsing.
+The application is implemented using [Elixir](https://elixir-lang.org/) as the programming language, [ExUnit](https://hexdocs.pm/ex_unit/ExUnit.html) for testing, [HTTPoison](https://hexdocs.pm/httpoison/HTTPoison.html) for HTTP requests, [Poison](https://hexdocs.pm/poison/api-reference.html) for JSON encoding, and [Floki](https://hexdocs.pm/floki/Floki.html) for HTML parsing.
 
 ## Data fetching and processing
 
-In order to fetch the HTML pages with the reviews and extract the information, HTTPoison was used to perform HTTP requests to retrieve the HTML of the targeted pages, it happens on the `ReviewsScraper.Scraper` at the `get_reviews/0` function. 
+In order to fetch the HTML pages with the reviews and extract the information, HTTPoison was used to perform HTTP requests to retrieve the HTML of the targeted pages, it happens on the `ReviewsScraper.Scraper.get_reviews/0` function. 
 
-For each page retrieval, the HTML is parsed into `%ReviewsScraper.Models.Review{}` structs. All this processing is done using `Task.async_stream/3` which means that the requests and the HTML parsing are made concurrently increasing the speed of the application.
+For each page retrieval, the HTML is parsed into lists of `%ReviewsScraper.Models.Review{}` structs. All this processing is done using `Task.async_stream/3` which means that the requests and the HTML parsing are made concurrently witch makes the application display the result quickly.
 
 ## Selecting the top three "overly positive" reviews
 
-For each review a score is calculated based on the number of stars given in the review then the application will sort the reviews based on the score and the date of the review. Then the application will select the top three reviews with the biggest score that is more recent.
+For each review a score is calculated based on the number of stars given in the review then the application will sort the reviews based on the score and the date of the review. The top three "overly positive" reviews are the ones with the biggest scores that were recently added to the website.
 
 ## Review score calculation
 
@@ -24,12 +24,18 @@ When analyzing the HTML of each review, the following attributes can be found:
 
 1. Overall rating
 2. Individual rating for each service provided
-3. Individual rating for each employee involved
+3. Involved employee rating
 4. If the review author recommends the services for other users
 
-From items 1 to 3 the attributes are displayed using stars with are controlled by the CSS class `rating-` that goes from `rating-00` to `rating-50`. For item 4 the value is `Yes` or `No`.
+From items 1 to 3 the attributes are displayed using stars that are controlled by the CSS class `rating-*`. This CSS class provides values from `rating-00` to `rating-50`. For item 4 the value is `Yes` or `No`.
 
-In order to calculate the score of a review, all those ratings are converted into numbers, for the items controlled by the `rating-` CSS class, the number part is extracted so each item can receive a value between `0` to `50` that is added to the score when the services are recommended by the author, another `50` points are credited to the score.
+In order to calculate the score of a review, all attributes are converted into numbers. 
+
+For the overall rating, individual service rating, and employee ratings the numeric part is extracted from the  `rating-*` CSS class and parsed to an integer value. Then the values that can be from 0 to 50 are added to the score. 
+
+If the review recommends the services for another user, another `50` points are added to the score. 
+
+This method will provide high scores for the reviews that have more stars and more employees involved.
 
 # Output
 
