@@ -1,5 +1,4 @@
 defmodule ReviewsScraper.TestsSetups do
-
   alias ReviewsScraper.Models.{Review, IndividualReview, EmployeeReview}
 
   @review_html """
@@ -148,6 +147,7 @@ defmodule ReviewsScraper.TestsSetups do
         </body>
       </html>
     """
+
     {:ok, Map.put(setup, :reviews_html, reviews_html)}
   end
 
@@ -164,22 +164,22 @@ defmodule ReviewsScraper.TestsSetups do
       author: "lisapantlin",
       content: "[REVIEW CONTENT]",
       individual_rates: [
-        %IndividualReview{ name: "Customer Service", rating: 50 },
-        %IndividualReview{ name: "Quality of Work", rating: 0 },
-        %IndividualReview{ name: "Friendliness", rating: 50 },
-        %IndividualReview{ name: "Pricing", rating: 50 },
-        %IndividualReview{ name: "Overall Experience", rating: 50 },
-        %IndividualReview{ name: "Recommend Dealer", rating: "yes" }
+        %IndividualReview{name: "Customer Service", rating: 50},
+        %IndividualReview{name: "Quality of Work", rating: 0},
+        %IndividualReview{name: "Friendliness", rating: 50},
+        %IndividualReview{name: "Pricing", rating: 50},
+        %IndividualReview{name: "Overall Experience", rating: 50},
+        %IndividualReview{name: "Recommend Dealer", rating: "yes"}
       ],
       employees_reviews: [
-        %EmployeeReview{ name: "Adrian \"AyyDee\" Cortes", rating: 50},
-        %EmployeeReview{ name: "Brandon McCloskey", rating: 50},
-        %EmployeeReview{ name: "Alisa Cerney", rating: 50},
-        %EmployeeReview{ name: "Summur Villareal", rating: 50}
+        %EmployeeReview{name: "Adrian \"AyyDee\" Cortes", rating: 50},
+        %EmployeeReview{name: "Brandon McCloskey", rating: 50},
+        %EmployeeReview{name: "Alisa Cerney", rating: 50},
+        %EmployeeReview{name: "Summur Villareal", rating: 50}
       ],
       score: 500
     }
+
     {:ok, Map.put(setup, :review, review)}
   end
-
 end

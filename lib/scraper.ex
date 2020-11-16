@@ -32,10 +32,11 @@ defmodule ReviewsScraper.Scraper do
   """
   def process_page(page_number) do
     with {:ok, url} <- get_url("/page#{page_number}/?filter=&__optvLead=0#link"),
-         {:response, {:ok, %HTTPoison.Response{ status_code: 200, body: body }}} <- {:response, HTTPoison.get(url)} do
+         {:response, {:ok, %HTTPoison.Response{status_code: 200, body: body}}} <-
+           {:response, HTTPoison.get(url)} do
       ReviewsScraper.ReviewsParser.get_document_reviews(body)
     else
-      {:response, {:error, _ }} ->
+      {:response, {:error, _}} ->
         raise("Unable to download reviews")
     end
   end

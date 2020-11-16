@@ -47,5 +47,4 @@ defmodule ReviewsScraper.DateParserTest do
       assert {:error, _} = DateParser.parse_date("invalid string format")
     end
   end
-
 end

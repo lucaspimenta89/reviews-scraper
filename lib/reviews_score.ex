@@ -21,18 +21,20 @@ defmodule ReviewsScraper.ReviewsScore do
       score: 150
     }
   """
-  def get_review_score(%Review{
-    rating: rating,
-    individual_rates: individual_rates,
-    employees_reviews: employees_reviews
-  } = review) do
-    score = rating
-    |> sum_individual_rates(individual_rates)
-    |> sum_employees_rates(employees_reviews)
+  def get_review_score(
+        %Review{
+          rating: rating,
+          individual_rates: individual_rates,
+          employees_reviews: employees_reviews
+        } = review
+      ) do
+    score =
+      rating
+      |> sum_individual_rates(individual_rates)
+      |> sum_employees_rates(employees_reviews)
 
     Map.put(review, :score, score)
   end
-
 
   @doc """
     Sum all individual rates of a Review recursively
@@ -51,11 +53,12 @@ defmodule ReviewsScraper.ReviewsScore do
     0
 
   """
-  def sum_individual_rates(score, [%IndividualReview{ rating: "yes" } | tail]) do
+  def sum_individual_rates(score, [%IndividualReview{rating: "yes"} | tail]) do
     sum_individual_rates(score + 50, tail)
   end
 
-  def sum_individual_rates(score, [%IndividualReview{ rating: rating } | tail]) when is_number(rating) do
+  def sum_individual_rates(score, [%IndividualReview{rating: rating} | tail])
+      when is_number(rating) do
     sum_individual_rates(score + rating, tail)
   end
 
@@ -79,7 +82,8 @@ defmodule ReviewsScraper.ReviewsScore do
     iex> sum_employees_rates(0, [])
     0
   """
-  def sum_employees_rates(score, [%EmployeeReview{ rating: rating } | tail]) when is_number(rating) do
+  def sum_employees_rates(score, [%EmployeeReview{rating: rating} | tail])
+      when is_number(rating) do
     sum_employees_rates(score + rating, tail)
   end
 
@@ -88,5 +92,4 @@ defmodule ReviewsScraper.ReviewsScore do
   end
 
   def sum_employees_rates(score, []), do: score
-
 end

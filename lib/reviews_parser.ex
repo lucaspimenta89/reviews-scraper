@@ -72,9 +72,10 @@ defmodule ReviewsScraper.ReviewsParser do
     %Review{ rating: 50 }
   """
   def get_review_rating(%Review{} = review, review_fragment) do
-    rating = review_fragment
-    |> get_node_class_attribute("div.dealership-rating > div:first-child")
-    |> get_rating_from_classes()
+    rating =
+      review_fragment
+      |> get_node_class_attribute("div.dealership-rating > div:first-child")
+      |> get_rating_from_classes()
 
     Map.put(review, :rating, rating)
   end
@@ -89,7 +90,9 @@ defmodule ReviewsScraper.ReviewsParser do
   def get_rating_from_classes([classes]) when is_binary(classes) do
     classes
     |> String.split()
-    |> Enum.find(fn class -> !String.starts_with?(class, "rating-static") && String.starts_with?(class, "rating-") end)
+    |> Enum.find(fn class ->
+      !String.starts_with?(class, "rating-static") && String.starts_with?(class, "rating-")
+    end)
     |> get_rating_value()
   end
 
@@ -104,9 +107,10 @@ defmodule ReviewsScraper.ReviewsParser do
     0
   """
   def get_rating_value("rating-" <> value) do
-    {int_part, _ } = Integer.parse(value)
+    {int_part, _} = Integer.parse(value)
     int_part
   end
+
   def get_rating_value(_), do: 0
 
   @doc """
@@ -123,9 +127,10 @@ defmodule ReviewsScraper.ReviewsParser do
     %Review{ date: ~D[2020-11-14] }
   """
   def get_review_date(%Review{} = review, review_fragment) do
-    {:ok, date} = review_fragment
-    |> get_node_text("div.review-date > div:first-child")
-    |> DateParser.parse_date()
+    {:ok, date} =
+      review_fragment
+      |> get_node_text("div.review-date > div:first-child")
+      |> DateParser.parse_date()
 
     Map.put(review, :date, date)
   end
@@ -147,9 +152,10 @@ defmodule ReviewsScraper.ReviewsParser do
     %Review{ author: "lisapantlin" }
   """
   def get_review_author(%Review{} = review, review_fragment) do
-    author = review_fragment
-    |> get_node_text("div.review-wrapper > div:first-child > span")
-    |> parse_author_name()
+    author =
+      review_fragment
+      |> get_node_text("div.review-wrapper > div:first-child > span")
+      |> parse_author_name()
 
     Map.put(review, :author, author)
   end
@@ -186,9 +192,10 @@ defmodule ReviewsScraper.ReviewsParser do
     %Review{ content: "[REVIEW CONTENT]" }
   """
   def get_review_content(%Review{} = review, review_fragment) do
-    content = review_fragment
-    |> get_node_text("p.review-content")
-    |> String.trim()
+    content =
+      review_fragment
+      |> get_node_text("p.review-content")
+      |> String.trim()
 
     Map.put(review, :content, content)
   end
@@ -212,9 +219,10 @@ defmodule ReviewsScraper.ReviewsParser do
     %Review{ individual_rates: [%IndividualReview{ name: "Customer Service", rating: 50}] }
   """
   def get_individual_rates(%Review{} = review, review_fragment) do
-    individual_rates = review_fragment
-    |> find_nodes("div.review-ratings-all > div.table > div.tr")
-    |> Enum.map(&get_individual_rate/1)
+    individual_rates =
+      review_fragment
+      |> find_nodes("div.review-ratings-all > div.table > div.tr")
+      |> Enum.map(&get_individual_rate/1)
 
     Map.put(review, :individual_rates, individual_rates)
   end
@@ -239,7 +247,6 @@ defmodule ReviewsScraper.ReviewsParser do
     |> get_individual_rate_value(rate_fragment)
   end
 
-
   @doc """
     Get the name part of a individual rate fragment,  and set it to the "name" field of an %IndividualReview{}
 
@@ -255,8 +262,9 @@ defmodule ReviewsScraper.ReviewsParser do
    %IndividualReview{ name: "Customer Service"}
   """
   def get_individual_rate_name(%IndividualReview{} = individual_rate, rate_fragment) do
-    rate_name = rate_fragment
-    |> get_node_text("div:first-child")
+    rate_name =
+      rate_fragment
+      |> get_node_text("div:first-child")
 
     Map.put(individual_rate, :name, rate_name)
   end
@@ -285,19 +293,24 @@ defmodule ReviewsScraper.ReviewsParser do
     iex> ReviewsScraper.ReviewsParser.get_individual_rate_value(%IndividualReview{ name: "Customer Service" }, review_fragment)
     %IndividualReview{  name: "Customer Service", rating: 50 }
   """
-  def get_individual_rate_value(%IndividualReview{ name: "Recommend Dealer" } = individual_rate, rate_fragment) do
-    rate_value = rate_fragment
-    |> get_node_text("div:nth-child(2)")
-    |> String.replace(~r/[^A-za-z]/, "")
-    |> String.downcase()
+  def get_individual_rate_value(
+        %IndividualReview{name: "Recommend Dealer"} = individual_rate,
+        rate_fragment
+      ) do
+    rate_value =
+      rate_fragment
+      |> get_node_text("div:nth-child(2)")
+      |> String.replace(~r/[^A-za-z]/, "")
+      |> String.downcase()
 
     Map.put(individual_rate, :rating, rate_value)
   end
 
   def get_individual_rate_value(%IndividualReview{} = individual_rate, rate_fragment) do
-    rate_value = rate_fragment
-    |> get_node_class_attribute("div.rating-static-indv")
-    |> get_rating_from_classes()
+    rate_value =
+      rate_fragment
+      |> get_node_class_attribute("div.rating-static-indv")
+      |> get_rating_from_classes()
 
     Map.put(individual_rate, :rating, rate_value)
   end
@@ -337,9 +350,10 @@ defmodule ReviewsScraper.ReviewsParser do
     }
   """
   def get_employees_reviews(%Review{} = review, review_rating) do
-    employees_reviews = review_rating
-    |> find_nodes("div.employees-wrapper > div.review-employee")
-    |> Enum.map(&get_employee_review/1)
+    employees_reviews =
+      review_rating
+      |> find_nodes("div.employees-wrapper > div.review-employee")
+      |> Enum.map(&get_employee_review/1)
 
     Map.put(review, :employees_reviews, employees_reviews)
   end
@@ -407,7 +421,8 @@ defmodule ReviewsScraper.ReviewsParser do
     %EmployeeReview{ name: "Adrian "AyyDee" Cortes" }
   """
   def get_employee_review_name(%EmployeeReview{} = employee_review, employee_review_fragment) do
-    name = employee_review_fragment
+    name =
+      employee_review_fragment
       |> get_node_text("a.tagged-emp")
       |> String.trim()
 
@@ -443,11 +458,11 @@ defmodule ReviewsScraper.ReviewsParser do
     %EmployeeReview{ rating: 50 }
   """
   def get_employee_review_rate(%EmployeeReview{} = employee_review, employee_review_fragment) do
-    rate = employee_review_fragment
+    rate =
+      employee_review_fragment
       |> get_node_class_attribute("div.employee-rating-badge-sm > div > div.rating-static")
       |> get_rating_from_classes()
 
     Map.put(employee_review, :rating, rate)
   end
-
 end

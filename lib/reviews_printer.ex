@@ -19,5 +19,4 @@ defmodule ReviewsScraper.ReviewsPrinter do
     |> Poison.encode!(pretty: true)
     |> IO.puts()
   end
-
 end

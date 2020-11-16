@@ -50,7 +50,8 @@ defmodule ReviewsScraper.HtmlParser do
     iex> ReviewsScraper.HtmlParser.get_node_class_attribute(html, "span.hint")
     ["hint"]
   """
-  def get_node_class_attribute(parsed_html, selector), do: get_node_attribute(parsed_html, selector, "class")
+  def get_node_class_attribute(parsed_html, selector),
+    do: get_node_attribute(parsed_html, selector, "class")
 
   @doc """
     Shorthand for find_nodes/2 |> Floki.text()

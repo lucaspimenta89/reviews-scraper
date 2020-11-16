@@ -42,8 +42,8 @@ defmodule ReviewsScraper.DateParser do
 
   defp to_date([month, day, year]) do
     with month_int <- Map.get(@months, month),
-        {day_int, _} <- Integer.parse(day),
-        {year_int, _} <- Integer.parse(year) do
+         {day_int, _} <- Integer.parse(day),
+         {year_int, _} <- Integer.parse(year) do
       Date.new(year_int, month_int, day_int)
     else
       _ -> {:error, :invalid_date}

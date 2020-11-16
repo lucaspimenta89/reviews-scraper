@@ -4,7 +4,6 @@ defmodule ReviewsScraper.CLI do
   """
   alias ReviewsScraper.ReviewsPrinter
 
-
   @doc """
     Select the top three reviews with the bigest scores and are more recent
 
